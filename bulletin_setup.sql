@@ -1,0 +1,48 @@
+CREATE TABLE IF NOT EXISTS bulletin_notes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    author_id INT NOT NULL,
+    post_date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    boost_date DATETIME DEFAULT NULL,
+    pinned TINYINT(1) NOT NULL DEFAULT 0,
+    deleted TINYINT(1) NOT NULL DEFAULT 0,
+    title VARCHAR(60) NOT NULL,
+    content VARCHAR(350) NOT NULL,
+    hashtags VARCHAR(255) NOT NULL,
+    font VARCHAR(100) NOT NULL,
+    text_color VARCHAR(20) NOT NULL,
+    bg_color VARCHAR(20) NOT NULL
+) CHARACTER SET utf8mb4;
+
+-- Random demo notes
+INSERT INTO bulletin_notes (author_id, post_date, pinned, title, content, hashtags, font, text_color, bg_color)
+VALUES
+    (1, NOW(), 0, 'Sample Note 1', 'This is example content for note 1.', '#tag1', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 2', 'This is example content for note 2.', '#tag2', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 3', 'This is example content for note 3.', '#tag3', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 4', 'This is example content for note 4.', '#tag4', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 5', 'This is example content for note 5.', '#tag5', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 6', 'This is example content for note 6.', '#tag6', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 7', 'This is example content for note 7.', '#tag7', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 8', 'This is example content for note 8.', '#tag8', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 9', 'This is example content for note 9.', '#tag9', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 10', 'This is example content for note 10.', '#tag10', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 11', 'This is example content for note 11.', '#tag11', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 12', 'This is example content for note 12.', '#tag12', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 13', 'This is example content for note 13.', '#tag13', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 14', 'This is example content for note 14.', '#tag14', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 15', 'This is example content for note 15.', '#tag15', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 16', 'This is example content for note 16.', '#tag16', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 17', 'This is example content for note 17.', '#tag17', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 18', 'This is example content for note 18.', '#tag18', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 19', 'This is example content for note 19.', '#tag19', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 20', 'This is example content for note 20.', '#tag20', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 21', 'This is example content for note 21.', '#tag21', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 22', 'This is example content for note 22.', '#tag22', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 23', 'This is example content for note 23.', '#tag23', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 24', 'This is example content for note 24.', '#tag24', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 25', 'This is example content for note 25.', '#tag25', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 26', 'This is example content for note 26.', '#tag26', 'Arial', '#333', '#ffff99'),
+    (3, NOW(), 0, 'Sample Note 27', 'This is example content for note 27.', '#tag27', 'Arial', '#333', '#ffff99'),
+    (4, NOW(), 0, 'Sample Note 28', 'This is example content for note 28.', '#tag28', 'Arial', '#333', '#ffff99'),
+    (1, NOW(), 0, 'Sample Note 29', 'This is example content for note 29.', '#tag29', 'Arial', '#333', '#ffff99'),
+    (2, NOW(), 0, 'Sample Note 30', 'This is example content for note 30.', '#tag30', 'Arial', '#333', '#ffff99');
