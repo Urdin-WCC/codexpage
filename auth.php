@@ -1,7 +1,9 @@
 <?php
 require_once __DIR__.'/db.php';
 
-session_start();
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    session_start();
+}
 
 function current_user(): ?array {
     if (isset($_SESSION['user_id'])) {
