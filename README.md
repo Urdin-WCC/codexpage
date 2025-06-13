@@ -14,7 +14,12 @@ Incluya al inicio de cada página protegida:
 
 ```php
 require_once __DIR__.'/auth.php';
+
+enforce_access(['rule' => 'authenticated']); // o la regla que corresponda
+$user = current_user();
+=======
 enforce_access([ 'rule' => 'authenticated' ]); // o la regla que corresponda
+
 ```
 
 Reglas disponibles:

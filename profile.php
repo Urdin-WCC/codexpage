@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__.'/auth.php';
 require_login();
+$user = current_user();
+$error = null;
 $user = get_current_user();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

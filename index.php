@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/auth.php';
+$user = current_user();
 $user = get_current_user();
 ?>
 <!DOCTYPE html>
