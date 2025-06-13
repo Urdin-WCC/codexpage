@@ -53,15 +53,7 @@ $unpinned = $pdo->query("SELECT n.*, u.name, u.level FROM bulletin_notes n JOIN 
 <head>
 <meta charset="UTF-8">
 <title>Bulletin Board</title>
-<style>
-body{font-family:Arial, sans-serif;background:#f4f4f4;margin:0;padding:20px;}
-header{display:flex;justify-content:space-between;align-items:center;}
-#board{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
-.note{padding:10px;width:180px;min-height:100px;box-shadow:0 0 5px rgba(0,0,0,0.3);position:relative;cursor:pointer;}
-.note small{display:block;font-size:12px;}
-#newNoteOverlay{display:none;}
-.modal label{display:block;margin-bottom:10px;}
-</style>
+<link rel="stylesheet" href="board.css">
 </head>
 <body>
 <header>

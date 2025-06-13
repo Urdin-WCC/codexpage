@@ -17,6 +17,7 @@ $pages = ceil($total/$perPage);
 <head>
 <meta charset="UTF-8">
 <title>Archive</title>
+<link rel="stylesheet" href="board.css">
 </head>
 <body>
 <h1>Archive</h1>

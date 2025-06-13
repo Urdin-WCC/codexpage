@@ -19,6 +19,7 @@ if($query){
 <head>
 <meta charset="UTF-8">
 <title>Search Notes</title>
+<link rel="stylesheet" href="board.css">
 </head>
 <body>
 <h1>Search Notes</h1>
