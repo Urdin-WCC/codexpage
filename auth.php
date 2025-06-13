@@ -61,7 +61,7 @@ function check_access(array $config): bool {
         return true; // full access for level 100
     }
 
-    if (in_array($user_id, $except_ids)) {
+    if (in_array($user_id, $except_ids, true)) {
         return false;
     }
 
