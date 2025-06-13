@@ -31,12 +31,6 @@ if($query){
 <li><a href="#" onclick="openView(<?php echo $n['id']; ?>);return false;"><?php echo htmlspecialchars($n['title']);?></a></li>
 <?php } ?>
 </ul>
-<div id="viewOverlay" class="overlay" style="display:none"><div class="modal" id="viewContent"></div></div>
-<script>
-function openView(id){
-  fetch('view_note.php?id='+id).then(r=>r.text()).then(h=>{document.getElementById('viewContent').innerHTML=h;document.getElementById('viewOverlay').style.display='flex';});
-}
-document.getElementById('viewOverlay').addEventListener('click',e=>{if(e.target.id==='viewOverlay'){e.target.style.display='none';}});
-</script>
+<?php include __DIR__.'/overlay.inc.php'; ?>
 </body>
 </html>

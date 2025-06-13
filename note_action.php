@@ -1,8 +1,10 @@
 <?php
 require_once __DIR__.'/auth.php';
+require_once __DIR__.'/csrf.php';
 require_login();
 $pdo = get_db_connection();
 $id = (int)($_POST['id'] ?? 0);
+if(!verify_csrf()) { die('Invalid CSRF'); }
 $noteStmt = $pdo->prepare('SELECT * FROM bulletin_notes WHERE id=?');
 $noteStmt->execute([$id]);
 $note = $noteStmt->fetch();

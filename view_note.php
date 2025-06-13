@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__.'/auth.php';
+require_once __DIR__.'/csrf.php';
 $pdo = get_db_connection();
 $id = (int)($_GET['id'] ?? 0);
 $note = $pdo->prepare("SELECT n.*, u.name, u.level FROM bulletin_notes n JOIN users u ON u.id=n.author_id WHERE n.id=?");
@@ -8,7 +9,7 @@ $n = $note->fetch();
 if(!$n){ echo 'Note not found'; exit; }
 $size = 14 + floor(($n['level'] ?? 0)/10);
 ?>
-<div style="background:<?php echo htmlspecialchars($n['bg_color']);?>;color:<?php echo htmlspecialchars($n['text_color']);?>;font-family:<?php echo $n['font'];?>;font-size:<?php echo $size;?>px;padding:10px;">
+<div style="background:<?php echo htmlspecialchars($n['bg_color']);?>;color:<?php echo htmlspecialchars($n['text_color']);?>;font-family:<?php echo htmlspecialchars($n['font'],ENT_QUOTES);?>;font-size:<?php echo $size;?>px;padding:10px;">
 <p style="font-size:smaller;">
 <?php if($n['boost_date']){ ?>
 <span style="text-decoration:line-through;"><?php echo htmlspecialchars($n['post_date']);?></span>
@@ -25,12 +26,14 @@ $size = 14 + floor(($n['level'] ?? 0)/10);
 <?php if(get_current_user()){ ?>
 <form method="post" action="note_action.php" style="display:inline">
 <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
+<?php echo csrf_field(); ?>
 <button name="boost">Boost</button>
 </form>
 <?php }
 if($user && ($user['id']==$n['author_id'] && $user['level']>50 || $user['level']>70)){ ?>
 <form method="post" action="note_action.php" style="display:inline">
 <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
+<?php echo csrf_field(); ?>
 <button name="toggle_pin"><?php echo $n['pinned']? 'Unpin':'Pin'; ?></button>
 </form>
 <?php }
@@ -40,6 +43,7 @@ if($user){ ?>
 if($user && ($user['id']==$n['author_id'] || $user['level']>80)){ ?>
 <form method="post" action="note_action.php" style="display:inline" onsubmit="return confirm('Delete note?')">
 <input type="hidden" name="id" value="<?php echo $n['id']; ?>">
+<?php echo csrf_field(); ?>
 <button name="delete">Delete</button>
 </form>
 <?php } ?>

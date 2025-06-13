@@ -1,16 +1,30 @@
 <?php
 require_once __DIR__.'/auth.php';
+require_once __DIR__.'/csrf.php';
 $pdo = get_db_connection();
 $user = get_current_user();
 
 // Handle create note
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_note'])) {
     if (!$user) { header('Location: login.php'); exit; }
-    $title = substr(trim($_POST['title'] ?? ''),0,60);
-    $content = substr(trim($_POST['content'] ?? ''),0,350);
+    if (!verify_csrf()) { die('Invalid CSRF'); }
+    $title = mb_substr(trim($_POST['title'] ?? ''),0,60,'UTF-8');
+    $content = mb_substr(trim($_POST['content'] ?? ''),0,350,'UTF-8');
     $hashtags = trim($_POST['hashtags'] ?? '');
     $hashtags = preg_replace('/\s+/', ' ', $hashtags);
-    if ($title && $content && $hashtags) {
+
+    $tags = array_filter(explode(' ', $hashtags), function($t){return $t!=='';});
+    $valid_hashtags = true;
+    if (count($tags) < 1 || count($tags) > 5) {
+        $valid_hashtags = false;
+    } else {
+        foreach($tags as $t){
+            if(!preg_match('/^#[A-Za-z0-9_]{1,30}$/',$t)) { $valid_hashtags=false; break; }
+        }
+    }
+
+    if ($title && $content && $valid_hashtags) {
+        $hashtags = implode(' ', $tags);
         $fonts = ['"Comic Sans MS"','"Courier New"','Georgia','Verdana','Arial'];
         $font = $fonts[array_rand($fonts)];
         $text_colors = ['#111','#222','#333','#444'];
@@ -45,9 +59,7 @@ header{display:flex;justify-content:space-between;align-items:center;}
 #board{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;}
 .note{padding:10px;width:180px;min-height:100px;box-shadow:0 0 5px rgba(0,0,0,0.3);position:relative;cursor:pointer;}
 .note small{display:block;font-size:12px;}
-.overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;}
-#newNoteOverlay,.viewOverlay{display:none;}
-.overlay .modal{background:#fff;padding:20px;max-width:400px;width:100%;}
+#newNoteOverlay{display:none;}
 .modal label{display:block;margin-bottom:10px;}
 </style>
 </head>
@@ -64,7 +76,7 @@ header{display:flex;justify-content:space-between;align-items:center;}
 function render_note($n){
     $rotate = rand(-5,5);
     $size = 14 + floor(($n['level'] ?? 0)/10);
-    echo '<div class="note" style="background:'.htmlspecialchars($n['bg_color']).';color:'.htmlspecialchars($n['text_color']).';font-family:'.$n['font'].';transform:rotate('.$rotate.'deg);font-size:'.$size.'px" onclick="openView('.$n['id'].')">';
+    echo '<div class="note" style="background:'.htmlspecialchars($n['bg_color']).';color:'.htmlspecialchars($n['text_color']).';font-family:'.htmlspecialchars($n['font'],ENT_QUOTES).';transform:rotate('.$rotate.'deg);font-size:'.$size.'px" onclick="openView('.$n['id'].')">';
     echo '<small>'.htmlspecialchars($n['boost_date'] ?: $n['post_date']).'</small>';
     echo '<strong>'.htmlspecialchars($n['title']).'</strong><br>';
     echo '<small>'.htmlspecialchars($n['name']).'</small>';
@@ -80,6 +92,7 @@ foreach($unpinned as $n) render_note($n);
 <div class="modal">
 <form method="post">
 <input type="hidden" name="create_note" value="1">
+<?php echo csrf_field(); ?>
 <label>Title (max 60)<br><input type="text" name="title" maxlength="60" required></label>
 <label>Content (max 350)<br><textarea name="content" maxlength="350" required></textarea></label>
 <label>Hashtags (1-5)<br><input type="text" name="hashtags" required></label>
@@ -88,15 +101,6 @@ foreach($unpinned as $n) render_note($n);
 </form>
 </div>
 </div>
-<div class="overlay" id="viewOverlay"><div class="modal" id="viewContent"></div></div>
-<script>
-function openView(id){
-    fetch('view_note.php?id='+id).then(r=>r.text()).then(html=>{
-        document.getElementById('viewContent').innerHTML=html;
-        document.getElementById('viewOverlay').style.display='flex';
-    });
-}
-document.getElementById('viewOverlay').addEventListener('click',e=>{if(e.target.id==='viewOverlay'){e.target.style.display='none';}});
-</script>
+<?php include __DIR__.'/overlay.inc.php'; ?>
 </body>
 </html>
