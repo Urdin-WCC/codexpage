@@ -7,6 +7,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     if (login($email, $password)) {
+
+        $redirect = $_GET['redirect'] ?? 'index.php';
         header('Location: '.$redirect);
         exit;
     } else {
@@ -25,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <?php if (isset($error)) echo '<p style="color:red">'.$error.'</p>'; ?>
     <form method="post">
         <input type="hidden" name="redirect" value="<?php echo htmlspecialchars($redirect); ?>">
+      
         <label>Email: <input type="email" name="email" required></label><br>
         <label>Contraseña: <input type="password" name="password" required></label><br>
         <button type="submit">Ingresar</button>

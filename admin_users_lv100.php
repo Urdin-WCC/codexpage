@@ -2,6 +2,11 @@
 require_once __DIR__.'/auth.php';
 enforce_access(['rule' => 'range', 'min' => 100, 'max' => 100]);
 $user = current_user();
+=======
+$user = get_current_user();
+if (!$user || $user['level'] != 100) {
+    enforce_access(['rule' => 'ids', 'ids' => []]); // will redirect
+}
 
 $pdo = get_db_connection();
 
